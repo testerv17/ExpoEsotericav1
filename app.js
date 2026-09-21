@@ -14,8 +14,50 @@ const signs=[['CAPRICORNIO','♑',1,19],['ACUARIO','♒',2,18],['PISCIS','♓',3
 function zodiac(date){const d=new Date(date+'T12:00:00'),m=d.getMonth()+1,day=d.getDate();const bounds=[20,19,21,20,21,21,23,23,23,23,22,22];const names=[['CAPRICORNIO','♑'],['ACUARIO','♒'],['PISCIS','♓'],['ARIES','♈'],['TAURO','♉'],['GÉMINIS','♊'],['CÁNCER','♋'],['LEO','♌'],['VIRGO','♍'],['LIBRA','♎'],['ESCORPIO','♏'],['SAGITARIO','♐']];return day<bounds[m-1]?names[m-1]:names[m%12];}
 $('#fechaNacimiento').max=new Date().toISOString().split('T')[0];
 $('#fechaNacimiento').addEventListener('change',e=>{if(!e.target.value)return;const [name,glyph]=zodiac(e.target.value);$('#zodiacName').textContent=`${glyph} ${name}`;$('#zodiacGlyph').textContent=glyph;$('#zodiacResult').classList.add('show');$('#zodiacText').textContent='Tu primera coordenada astral ha sido encontrada.';});
-form.addEventListener('submit',e=>{e.preventDefault();if(!form.checkValidity()){form.reportValidity();return}const fd=new FormData(form),data=Object.fromEntries(fd.entries());data.id=generateId();data.timestamp=new Date().toISOString();const z=zodiac(data.fechaNacimiento);data.signo=z[0];try{const key='qrevento_expo_esoterica_registros';const rows=JSON.parse(localStorage.getItem(key)||'[]');rows.push(data);localStorage.setItem(key,JSON.stringify(rows));}catch(err){}$('#registrationId').textContent=data.id;$('#successZodiac').textContent=`${z[1]} ${z[0]} · CARTA ASTRAL`;showScreen(successScreen);});
-function generateId(){return `ESO-${String(new Date().getFullYear()).slice(-2)}-${Math.floor(100000+Math.random()*900000)}`}
+const API_URL='https://script.google.com/macros/s/AKfycbyM3mhup2rSWXeodZJMfFETAegn5VMcznZi6YRlIsiB2meQhSI5l-BByaUaH3dhzEZFng/exec';
+let submitting=false;
+form.addEventListener('submit',async e=>{
+  e.preventDefault();
+  if(submitting)return;
+  if(!form.checkValidity()){form.reportValidity();return;}
+
+  const submitButton=$('.cta.final',form);
+  const submitText=$('span',submitButton);
+  const originalText=submitText.textContent;
+  const fd=new FormData(form);
+  const data=Object.fromEntries(fd.entries());
+  const params=new URLSearchParams(location.search);
+  data.origen=(params.get('src')||'DIRECTO').trim().slice(0,80);
+  const z=zodiac(data.fechaNacimiento);
+
+  submitting=true;
+  submitButton.disabled=true;
+  submitText.textContent='Registrando coordenadas…';
+
+  try{
+    const response=await fetch(API_URL,{
+      method:'POST',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body:JSON.stringify(data),
+      redirect:'follow'
+    });
+    if(!response.ok)throw new Error(`HTTP ${response.status}`);
+    const result=await response.json();
+    if(!result.ok||!result.id)throw new Error(result.error||'No se recibió confirmación del servidor.');
+
+    $('#registrationId').textContent=result.id;
+    $('#successZodiac').textContent=`${z[1]} ${z[0]} · CARTA ASTRAL`;
+    showScreen(successScreen);
+    form.reset();
+  }catch(err){
+    console.error('QrEvento API:',err);
+    alert('No pudimos registrar tus datos. Revisa tu conexión e inténtalo nuevamente.');
+  }finally{
+    submitting=false;
+    submitButton.disabled=false;
+    submitText.textContent=originalText;
+  }
+});
 
 // COSMIC CANVAS — depth, drift, glow and occasional shooting stars
 const canvas=$('#cosmos'),ctx=canvas.getContext('2d');let W,H,DPR,stars=[],mx=0,my=0,shoot=null;
