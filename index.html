@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#08091b">
+  <title>Expo Esotérica · Carta Astral</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <canvas id="cosmos" aria-hidden="true"></canvas>
+  <div class="aurora aurora-a"></div><div class="aurora aurora-b"></div>
+
+  <main class="app-shell">
+    <section class="screen active" id="welcome">
+      <header class="brandbar">
+        <img src="assets/logo-expo-esoterica.png" alt="Expo Esotérica" class="brand-logo">
+        <span class="event-date">02—04 OCT · 2026</span>
+      </header>
+
+      <div class="hero-visual" id="heroVisual" aria-hidden="true">
+        <div class="halo halo-1"></div><div class="halo halo-2"></div>
+        <div class="zodiac-wheel">
+          <div class="zodiac-ring ring-a"></div><div class="zodiac-ring ring-b"></div>
+          <span class="z z1">♈</span><span class="z z2">♉</span><span class="z z3">♊</span><span class="z z4">♋</span>
+          <span class="z z5">♌</span><span class="z z6">♍</span><span class="z z7">♎</span><span class="z z8">♏</span>
+          <span class="z z9">♐</span><span class="z z10">♑</span><span class="z z11">♒</span><span class="z z12">♓</span>
+          <svg class="constellation" viewBox="0 0 420 420">
+            <defs><filter id="glow"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+            <path class="const-line" d="M92 252 L150 178 L218 208 L286 126 L334 196 L277 279 L205 302 L150 178"/>
+            <g class="const-stars" filter="url(#glow)">
+              <circle cx="92" cy="252" r="4"/><circle cx="150" cy="178" r="6"/><circle cx="218" cy="208" r="4"/>
+              <circle cx="286" cy="126" r="7"/><circle cx="334" cy="196" r="4"/><circle cx="277" cy="279" r="5"/><circle cx="205" cy="302" r="4"/>
+            </g>
+          </svg>
+          <div class="planet"><span></span></div>
+        </div>
+      </div>
+
+      <div class="hero-copy">
+        <p class="kicker"><span></span> EXPERIENCIA ASTRAL <span></span></p>
+        <h1>El cielo del día<br><em>en que naciste.</em></h1>
+        <p class="lead">Descubre la configuración única de los astros en el instante en que llegaste al mundo.</p>
+        <button class="cta" id="startButton"><span>Descubrir mi carta astral</span><b>↗</b></button>
+        <p class="delivery"><i></i> GRATIS · LA RECIBIRÁS VÍA WHATSAPP</p>
+      </div>
+      <div class="swipe-hint"><span></span></div>
+    </section>
+
+    <section class="screen form-screen" id="formScreen">
+      <header class="form-top">
+        <button id="backButton" class="icon-btn" aria-label="Volver">←</button>
+        <img src="assets/logo-expo-esoterica.png" alt="Expo Esotérica" class="mini-logo">
+        <div class="counter"><strong id="currentStep">01</strong><span>/05</span></div>
+      </header>
+
+      <div class="journey" aria-hidden="true"><span class="journey-line" id="progressBar"></span><i></i><i></i><i></i><i></i><i></i></div>
+
+      <form id="astroForm" novalidate>
+        <div class="form-step active" data-step="1">
+          <div class="step-art"><span class="glyph">✦</span><span class="orbit-dot"></span></div>
+          <p class="step-kicker">01 · IDENTIDAD</p><h2>¿Cómo te<br><em>llamas?</em></h2>
+          <p class="step-copy">Empecemos por ti.</p>
+          <label class="glass-field"><span>Tu nombre</span><input id="nombre" name="nombre" type="text" autocomplete="name" placeholder="Escribe tu nombre" required></label>
+          <button type="button" class="next-button">Continuar <span>→</span></button>
+        </div>
+
+        <div class="form-step" data-step="2">
+          <div class="step-art zodiac-preview"><span id="zodiacGlyph" class="glyph">☉</span><span class="orbit-dot"></span></div>
+          <p class="step-kicker">02 · NACIMIENTO</p><h2>¿Cuándo<br><em>naciste?</em></h2>
+          <p class="step-copy" id="zodiacText">Tu fecha revela tu signo solar.</p>
+          <label class="glass-field"><span>Fecha de nacimiento</span><input id="fechaNacimiento" name="fechaNacimiento" type="date" required></label>
+          <div class="zodiac-result" id="zodiacResult"><small>TU SIGNO SOLAR</small><strong id="zodiacName">—</strong></div>
+          <button type="button" class="next-button">Continuar <span>→</span></button>
+        </div>
+
+        <div class="form-step" data-step="3">
+          <div class="step-art"><span class="glyph">⌖</span><span class="orbit-dot"></span></div>
+          <p class="step-kicker">03 · ORIGEN</p><h2>¿Dónde<br><em>naciste?</em></h2>
+          <p class="step-copy">La ubicación completa tus coordenadas astrales.</p>
+          <label class="glass-field"><span>Ciudad de nacimiento</span><input id="lugarNacimiento" name="lugarNacimiento" type="text" placeholder="Ej. Monterrey, Nuevo León" required></label>
+          <button type="button" class="next-button">Continuar <span>→</span></button>
+        </div>
+
+        <div class="form-step" data-step="4">
+          <div class="step-art"><span class="glyph">◷</span><span class="orbit-dot"></span></div>
+          <p class="step-kicker">04 · EL INSTANTE</p><h2>¿A qué hora<br><em>naciste?</em></h2>
+          <p class="step-copy">Usa la hora más exacta que tengas.</p>
+          <div class="time-row">
+            <label class="glass-field compact"><span>Hora</span><input id="hora" name="hora" type="number" min="1" max="12" placeholder="08" required></label>
+            <b>:</b>
+            <label class="glass-field compact"><span>Minuto</span><input id="minuto" name="minuto" type="number" min="0" max="59" placeholder="30" required></label>
+          </div>
+          <div class="period-selector"><input type="radio" id="am" name="periodo" value="AM" checked><label for="am">AM</label><input type="radio" id="pm" name="periodo" value="PM"><label for="pm">PM</label></div>
+          <button type="button" class="next-button">Continuar <span>→</span></button>
+        </div>
+
+        <div class="form-step" data-step="5">
+          <div class="step-art"><span class="glyph">✧</span><span class="orbit-dot"></span></div>
+          <p class="step-kicker">05 · CONEXIÓN</p><h2>Tu carta está<br><em>casi lista.</em></h2>
+          <p class="step-copy">¿A qué WhatsApp enviamos tu experiencia?</p>
+          <label class="glass-field phone"><span>WhatsApp</span><i>+52</i><input id="whatsapp" name="whatsapp" type="tel" inputmode="numeric" maxlength="10" minlength="10" placeholder="81 1234 5678" required></label>
+          <label class="consent"><input id="consentimiento" type="checkbox" required><span class="check"></span><p>Acepto que Expo Esotérica utilice estos datos para generar y enviarme mi Carta Astral vía WhatsApp.</p></label>
+          <button type="submit" class="cta final"><span>Crear mi carta astral</span><b>✦</b></button>
+        </div>
+      </form>
+    </section>
+
+    <section class="screen success-screen" id="successScreen">
+      <header class="brandbar success-brand"><img src="assets/logo-expo-esoterica.png" alt="Expo Esotérica" class="brand-logo"></header>
+      <div class="success-cosmos"><div class="success-ring r1"></div><div class="success-ring r2"></div><div class="success-ring r3"></div><div class="success-core">✦</div><span class="spark s1"></span><span class="spark s2"></span><span class="spark s3"></span></div>
+      <p class="kicker"><span></span> COORDENADAS REGISTRADAS <span></span></p>
+      <h1>Tu punto en el universo<br><em>ya existe.</em></h1>
+      <p class="lead">Estamos preparando tu Carta Astral. La recibirás directamente vía WhatsApp.</p>
+      <div class="ticket-card"><small>REGISTRO EXPO ESOTÉRICA 2026</small><strong id="registrationId">ESO-26-000000</strong><span id="successZodiac">✦ CARTA ASTRAL</span></div>
+    </section>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
