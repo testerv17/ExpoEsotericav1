@@ -1,0 +1,385 @@
+const welcome = document.getElementById("welcome");
+const formScreen = document.getElementById("formScreen");
+const successScreen = document.getElementById("successScreen");
+
+const startButton = document.getElementById("startButton");
+const backButton = document.getElementById("backButton");
+
+const form = document.getElementById("astroForm");
+
+const steps = [...document.querySelectorAll(".form-step")];
+const nextButtons = [...document.querySelectorAll(".next-button")];
+
+const currentStepLabel = document.getElementById("currentStep");
+const progressBar = document.getElementById("progressBar");
+
+let currentStep = 1;
+
+
+/* =========================
+   SCREEN
+========================= */
+
+function showScreen(screen) {
+
+  document
+    .querySelectorAll(".screen")
+    .forEach(item => item.classList.remove("active"));
+
+  screen.classList.add("active");
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+
+}
+
+
+/* =========================
+   START
+========================= */
+
+startButton.addEventListener("click", () => {
+
+  showScreen(formScreen);
+
+  setTimeout(() => {
+    document.querySelector("#nombre").focus();
+  }, 500);
+
+});
+
+
+/* =========================
+   STEPS
+========================= */
+
+function renderStep() {
+
+  steps.forEach(step => {
+    step.classList.remove("active");
+  });
+
+  const activeStep =
+    document.querySelector(
+      `.form-step[data-step="${currentStep}"]`
+    );
+
+  activeStep.classList.add("active");
+
+  currentStepLabel.textContent =
+    String(currentStep).padStart(2, "0");
+
+  progressBar.style.width =
+    `${(currentStep / steps.length) * 100}%`;
+
+}
+
+
+function validateStep() {
+
+  const current =
+    document.querySelector(
+      `.form-step[data-step="${currentStep}"]`
+    );
+
+  const inputs =
+    [...current.querySelectorAll("input")];
+
+  for (const input of inputs) {
+
+    if (
+      input.type !== "radio" &&
+      input.type !== "checkbox" &&
+      !input.checkValidity()
+    ) {
+
+      input.reportValidity();
+
+      return false;
+    }
+
+  }
+
+  return true;
+
+}
+
+
+nextButtons.forEach(button => {
+
+  button.addEventListener("click", () => {
+
+    if (!validateStep())
+      return;
+
+    if (currentStep < steps.length) {
+
+      currentStep++;
+
+      renderStep();
+
+    }
+
+  });
+
+});
+
+
+/* =========================
+   BACK
+========================= */
+
+backButton.addEventListener("click", () => {
+
+  if (currentStep > 1) {
+
+    currentStep--;
+
+    renderStep();
+
+  }
+
+  else {
+
+    showScreen(welcome);
+
+  }
+
+});
+
+
+/* =========================
+   PHONE
+========================= */
+
+const phone =
+  document.getElementById("whatsapp");
+
+phone.addEventListener("input", () => {
+
+  phone.value =
+    phone.value.replace(/\D/g, "");
+
+});
+
+
+/* =========================
+   SUBMIT
+========================= */
+
+form.addEventListener("submit", event => {
+
+  event.preventDefault();
+
+  if (!form.checkValidity()) {
+
+    form.reportValidity();
+
+    return;
+
+  }
+
+  const formData =
+    new FormData(form);
+
+  const data = {
+
+    nombre:
+      formData.get("nombre"),
+
+    fechaNacimiento:
+      formData.get("fechaNacimiento"),
+
+    lugarNacimiento:
+      formData.get("lugarNacimiento"),
+
+    hora:
+      formData.get("hora"),
+
+    minuto:
+      formData.get("minuto"),
+
+    periodo:
+      formData.get("periodo"),
+
+    whatsapp:
+      formData.get("whatsapp")
+
+  };
+
+
+  /*
+   * EN EL SIGUIENTE PASO
+   * AQUÍ CONECTAREMOS GOOGLE SHEETS.
+   */
+
+  console.log("Registro:", data);
+
+
+  const id = generateRegistrationId();
+
+  document.getElementById(
+    "registrationId"
+  ).textContent = id;
+
+
+  showScreen(successScreen);
+
+});
+
+
+/* =========================
+   ID
+========================= */
+
+function generateRegistrationId() {
+
+  const now = new Date();
+
+  const year =
+    String(now.getFullYear()).slice(-2);
+
+  const random =
+    Math.floor(100000 + Math.random() * 900000);
+
+  return `ESO-${year}-${random}`;
+
+}
+
+
+/* =========================
+   STARFIELD
+========================= */
+
+const canvas =
+  document.getElementById("stars");
+
+const ctx =
+  canvas.getContext("2d");
+
+let stars = [];
+
+function resizeCanvas() {
+
+  const ratio =
+    window.devicePixelRatio || 1;
+
+  canvas.width =
+    window.innerWidth * ratio;
+
+  canvas.height =
+    window.innerHeight * ratio;
+
+  canvas.style.width =
+    window.innerWidth + "px";
+
+  canvas.style.height =
+    window.innerHeight + "px";
+
+  ctx.setTransform(
+    ratio,
+    0,
+    0,
+    ratio,
+    0,
+    0
+  );
+
+  createStars();
+
+}
+
+
+function createStars() {
+
+  stars = [];
+
+  const count =
+    Math.min(
+      100,
+      Math.floor(window.innerWidth / 5)
+    );
+
+  for (let i = 0; i < count; i++) {
+
+    stars.push({
+
+      x:
+        Math.random() *
+        window.innerWidth,
+
+      y:
+        Math.random() *
+        window.innerHeight,
+
+      radius:
+        Math.random() * 1.1,
+
+      opacity:
+        Math.random() * .65,
+
+      speed:
+        .002 + Math.random() * .008
+
+    });
+
+  }
+
+}
+
+
+function animateStars() {
+
+  ctx.clearRect(
+    0,
+    0,
+    window.innerWidth,
+    window.innerHeight
+  );
+
+  stars.forEach(star => {
+
+    star.opacity += star.speed;
+
+    if (
+      star.opacity > .75 ||
+      star.opacity < .05
+    ) {
+
+      star.speed *= -1;
+
+    }
+
+    ctx.beginPath();
+
+    ctx.arc(
+      star.x,
+      star.y,
+      star.radius,
+      0,
+      Math.PI * 2
+    );
+
+    ctx.fillStyle =
+      `rgba(230,215,185,${star.opacity})`;
+
+    ctx.fill();
+
+  });
+
+  requestAnimationFrame(
+    animateStars
+  );
+
+}
+
+
+window.addEventListener(
+  "resize",
+  resizeCanvas
+);
+
+resizeCanvas();
+animateStars();
