@@ -1,4 +1,4 @@
-const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const $=(s,root=document)=>root.querySelector(s), $$=(s,root=document)=>[...root.querySelectorAll(s)];
 const welcome=$('#welcome'),formScreen=$('#formScreen'),successScreen=$('#successScreen');
 const form=$('#astroForm'),steps=$$('.form-step'),progress=$('#progressBar'),stepLabel=$('#currentStep');
 let currentStep=1;
