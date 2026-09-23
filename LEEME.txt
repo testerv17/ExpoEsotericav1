@@ -1,0 +1,13 @@
+QrEvento · Expo Live Gallery V1.2 SUPABASE
+
+1) Supabase > SQL Editor > New query.
+2) Copia y ejecuta TODO el contenido de supabase/setup.sql.
+3) Sube esta carpeta a GitHub Pages.
+4) Abre /cobertura/ y publica una foto.
+5) Abre /live/ en otro dispositivo o pestaña. Debe aparecer automáticamente.
+
+IMPORTANTE
+- Se usa únicamente la publishable/anon key en frontend.
+- Nunca uses service_role en estos archivos.
+- Esta versión permite publicación pública desde Cobertura. Antes del evento conviene añadir autenticación para el equipo de cobertura.
+- El bucket expo-live queda público para que las imágenes publicadas puedan mostrarse en la galería.
