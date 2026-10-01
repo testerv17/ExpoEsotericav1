@@ -12,3 +12,21 @@
 @media(max-width:390px){.screen{padding-left:19px;padding-right:19px}.brand-logo{width:138px}.hero-visual{min-height:305px;height:43vh}.zodiac-wheel{width:min(82vw,340px)}.hero-copy{margin-top:-8px}.lead{margin:14px auto 18px}.journey{margin-bottom:28px}.step-art{width:80px;height:80px;margin-bottom:20px}.glass-field{margin-top:28px}}
 @media(min-width:700px){.app-shell:before{content:"";position:fixed;top:0;bottom:0;width:1px;left:calc(50% - 300px);background:linear-gradient(transparent,rgba(141,147,217,.08),transparent)}.app-shell:after{content:"";position:fixed;top:0;bottom:0;width:1px;right:calc(50% - 300px);background:linear-gradient(transparent,rgba(141,147,217,.08),transparent)}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}}
+pointer-events:auto;
+cursor:pointer;
+text-decoration:none;
+.evex-signature{
+  transition:
+    opacity .3s ease,
+    filter .3s ease;
+}
+
+.evex-signature:hover{
+  opacity:1;
+}
+
+.evex-signature:hover strong{
+  text-shadow:
+    0 0 12px rgba(166,150,255,.85),
+    0 0 30px rgba(115,91,255,.45);
+}
