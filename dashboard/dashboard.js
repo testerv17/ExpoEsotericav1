@@ -1283,7 +1283,7 @@ function initTerritoryMap(){
   const mapContainer=document.getElementById("territoryMap");
   if(!mapContainer)return;
   mapContainer.innerHTML="";
-  territoryMap=new mapboxgl.Map({container:mapContainer,style:"mapbox://styles/mapbox/dark-v11",center:[-100.3161,25.6866],zoom:6.4,pitch:48,bearing:-8,antialias:true,attributionControl:true});
+  territoryMap=new mapboxgl.Map({container:mapContainer,style:"mapbox://styles/mapbox/light-v11",center:[-100.3161,25.6866],zoom:6.4,pitch:48,bearing:-8,antialias:true,attributionControl:true});
   territoryMap.addControl(new mapboxgl.NavigationControl({visualizePitch:true}),"top-right");
   territoryMap.on("load",()=>{territoryReady=true;refreshTerritoryMap();$("#territoryLoading")?.classList.add("hidden")});
   $("#territoryReset").onclick=()=>fitTerritory();
