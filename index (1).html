@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>EVEX · Actualización en curso</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+:root{
+  --bg:#050713;
+  --text:#f7f8ff;
+  --muted:#9299b5;
+  --blue:#668cff;
+  --cyan:#74dfff;
+  --green:#59e5ae;
+}
+
+html,body{
+  width:100%;
+  min-height:100%;
+}
+
+body{
+  min-height:100vh;
+  color:var(--text);
+  font-family:"Manrope",sans-serif;
+
+  background:
+    radial-gradient(circle at 78% 10%,
+      rgba(63,92,220,.24),
+      transparent 31%),
+    radial-gradient(circle at 10% 90%,
+      rgba(62,126,214,.16),
+      transparent 32%),
+    linear-gradient(145deg,#050713,#080b1d 55%,#050611);
+
+  overflow-x:hidden;
+}
+
+/* =========================
+   FONDO
+========================= */
+
+.stars,
+.stars:before,
+.stars:after{
+  position:fixed;
+  inset:0;
+  content:"";
+  pointer-events:none;
+
+  background-image:
+    radial-gradient(circle,#fff 1px,transparent 1.4px);
+
+  background-size:95px 95px;
+  opacity:.10;
+}
+
+.stars:before{
+  background-size:145px 145px;
+  transform:translate(35px,55px);
+  opacity:.14;
+}
+
+.stars:after{
+  background-size:210px 210px;
+  transform:translate(90px,20px);
+  opacity:.08;
+}
+
+.orb{
+  position:fixed;
+  border-radius:50%;
+  filter:blur(100px);
+  pointer-events:none;
+}
+
+.orb.one{
+  width:400px;
+  height:400px;
+  right:-150px;
+  top:-120px;
+  background:#526eff;
+  opacity:.17;
+}
+
+.orb.two{
+  width:350px;
+  height:350px;
+  left:-140px;
+  bottom:-140px;
+  background:#3189ff;
+  opacity:.12;
+}
+
+/* =========================
+   LAYOUT
+========================= */
+
+.page{
+  position:relative;
+  z-index:5;
+
+  width:100%;
+  min-height:100vh;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  padding:32px 22px;
+}
+
+.content{
+  width:min(760px,100%);
+  text-align:center;
+}
+
+/* =========================
+   LOGO / SYMBOL
+========================= */
+
+.symbol{
+  width:62px;
+  height:62px;
+  margin:0 auto 20px;
+
+  display:grid;
+  place-items:center;
+
+  border-radius:20px;
+  border:1px solid rgba(180,190,255,.18);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(112,125,255,.18),
+      rgba(79,126,255,.05)
+    );
+
+  box-shadow:
+    0 0 45px rgba(88,112,255,.14),
+    inset 0 0 25px rgba(139,151,255,.05);
+
+  font-size:24px;
+  color:#bec7ff;
+}
+
+/* =========================
+   TEXTOS
+========================= */
+
+.eyebrow{
+  margin-bottom:14px;
+
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.22em;
+
+  color:#8993bd;
+}
+
+h1{
+  max-width:750px;
+  margin:auto;
+
+  font-family:"Syne",sans-serif;
+  font-size:clamp(38px,5.4vw,68px);
+  line-height:.96;
+  letter-spacing:-.055em;
+  font-weight:700;
+}
+
+h1 span{
+  font-weight:600;
+
+  background:
+    linear-gradient(90deg,#a9b5ff,#70caff);
+
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+
+.description{
+  max-width:570px;
+  margin:20px auto 0;
+
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.65;
+}
+
+/* =========================
+   STATUS
+========================= */
+
+.status{
+  display:inline-flex;
+  align-items:center;
+  gap:9px;
+
+  margin-top:20px;
+  padding:8px 13px;
+
+  border:1px solid rgba(143,155,224,.14);
+  border-radius:999px;
+
+  background:rgba(13,17,43,.55);
+
+  color:#9ea7c8;
+
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:.15em;
+}
+
+.status i{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+
+  background:var(--green);
+  box-shadow:0 0 14px var(--green);
+
+  animation:pulse 1.7s infinite;
+}
+
+/* =========================
+   CONTACTO
+========================= */
+
+.contact{
+  width:min(470px,100%);
+  margin:24px auto 0;
+
+  padding:18px;
+
+  border:1px solid rgba(170,180,255,.11);
+  border-radius:23px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(17,21,48,.66),
+      rgba(8,11,29,.48)
+    );
+
+  backdrop-filter:blur(18px);
+
+  box-shadow:
+    0 20px 60px rgba(0,0,0,.18);
+}
+
+.contact-label{
+  display:block;
+  margin-bottom:12px;
+
+  color:#7d86a8;
+
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:.14em;
+}
+
+/* =========================
+   WHATSAPP
+========================= */
+
+.whatsapp{
+  width:100%;
+  min-height:58px;
+
+  display:flex;
+  align-items:center;
+
+  padding:8px 15px;
+
+  border:1px solid rgba(91,230,180,.27);
+  border-radius:17px;
+
+  text-decoration:none;
+  color:#f2fff9;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(40,190,136,.23),
+      rgba(42,125,180,.13)
+    );
+
+  box-shadow:
+    0 12px 35px rgba(0,0,0,.16),
+    inset 0 0 22px rgba(90,230,180,.025);
+
+  transition:
+    transform .25s ease,
+    border-color .25s ease,
+    background .25s ease;
+}
+
+.whatsapp:hover{
+  transform:translateY(-2px);
+
+  border-color:rgba(91,230,180,.5);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(40,190,136,.31),
+      rgba(42,125,180,.17)
+    );
+}
+
+.wa-icon{
+  width:38px;
+  height:38px;
+  flex:0 0 38px;
+
+  display:grid;
+  place-items:center;
+
+  margin-right:13px;
+
+  border-radius:12px;
+
+  background:#4bdda7;
+  color:#06150f;
+
+  font-size:19px;
+  font-weight:900;
+
+  box-shadow:0 0 22px rgba(75,221,167,.17);
+}
+
+.wa-copy{
+  flex:1;
+  min-width:0;
+  text-align:left;
+}
+
+.wa-copy small{
+  display:block;
+
+  margin-bottom:2px;
+
+  color:#99bbae;
+
+  font-size:8px;
+  font-weight:800;
+  letter-spacing:.13em;
+}
+
+.wa-copy strong{
+  display:block;
+
+  color:#f5fffb;
+
+  font-family:"Syne",sans-serif;
+  font-size:17px;
+  font-weight:650;
+}
+
+.arrow{
+  margin-left:10px;
+
+  color:#8be7c5;
+  font-size:20px;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+footer{
+  margin-top:22px;
+
+  color:#505875;
+
+  font-size:8px;
+  font-weight:800;
+  letter-spacing:.17em;
+}
+
+footer strong{
+  color:#858dac;
+}
+
+/* =========================
+   ANIMACION
+========================= */
+
+@keyframes pulse{
+  50%{
+    opacity:.35;
+    transform:scale(.75);
+  }
+}
+
+/* =========================
+   LAPTOP BAJA ALTURA
+========================= */
+
+@media(max-height:760px) and (min-width:601px){
+
+  .page{
+    padding:18px 22px;
+  }
+
+  .symbol{
+    width:52px;
+    height:52px;
+    margin-bottom:14px;
+    border-radius:17px;
+    font-size:21px;
+  }
+
+  .eyebrow{
+    margin-bottom:10px;
+  }
+
+  h1{
+    font-size:clamp(36px,4.6vw,57px);
+  }
+
+  .description{
+    margin-top:14px;
+    font-size:12px;
+    line-height:1.5;
+  }
+
+  .status{
+    margin-top:14px;
+  }
+
+  .contact{
+    margin-top:16px;
+    padding:14px;
+  }
+
+  footer{
+    margin-top:15px;
+  }
+}
+
+/* =========================
+   MOVIL
+========================= */
+
+@media(max-width:600px){
+
+  .page{
+    min-height:100vh;
+    align-items:center;
+
+    padding:
+      max(18px,env(safe-area-inset-top))
+      15px
+      max(18px,env(safe-area-inset-bottom));
+  }
+
+  .symbol{
+    width:54px;
+    height:54px;
+
+    margin-bottom:16px;
+
+    border-radius:18px;
+    font-size:21px;
+  }
+
+  .eyebrow{
+    font-size:8px;
+    margin-bottom:12px;
+  }
+
+  h1{
+    font-size:clamp(34px,11vw,46px);
+    line-height:.98;
+  }
+
+  .description{
+    max-width:390px;
+
+    margin-top:16px;
+
+    font-size:12px;
+    line-height:1.55;
+  }
+
+  .description br{
+    display:none;
+  }
+
+  .status{
+    margin-top:15px;
+
+    font-size:8px;
+    padding:7px 11px;
+  }
+
+  .contact{
+    margin-top:17px;
+    padding:13px;
+
+    border-radius:19px;
+  }
+
+  .contact-label{
+    margin-bottom:10px;
+    font-size:8px;
+  }
+
+  .whatsapp{
+    min-height:57px;
+    padding:8px 12px;
+  }
+
+  .wa-icon{
+    width:36px;
+    height:36px;
+    flex-basis:36px;
+    margin-right:10px;
+  }
+
+  .wa-copy strong{
+    font-size:15px;
+  }
+
+  footer{
+    margin-top:17px;
+    font-size:7px;
+  }
+}
+
+/* teléfonos de poca altura */
+
+@media(max-height:650px){
+
+  .page{
+    align-items:flex-start;
+    padding-top:14px;
+    padding-bottom:14px;
+  }
+
+  .symbol{
+    width:44px;
+    height:44px;
+    margin-bottom:10px;
+    border-radius:15px;
+  }
+
+  .eyebrow{
+    margin-bottom:8px;
+  }
+
+  h1{
+    font-size:32px;
+  }
+
+  .description{
+    margin-top:11px;
+    font-size:11px;
+  }
+
+  .status{
+    margin-top:11px;
+  }
+
+  .contact{
+    margin-top:12px;
+  }
+
+  footer{
+    margin-top:12px;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  *{
+    animation:none !important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="stars"></div>
+<div class="orb one"></div>
+<div class="orb two"></div>
+
+<div class="page">
+
+  <main class="content">
+
+    <div class="symbol">✦</div>
+
+    <div class="eyebrow">
+      EVEX · EVENT EXPERIENCE PLATFORM
+    </div>
+
+    <h1>
+      Estamos preparando
+      <span>algo mejor.</span>
+    </h1>
+
+    <p class="description">
+      Nuestra plataforma se encuentra temporalmente en mantenimiento
+      mientras realizamos una actualización.
+      <br><br>
+      Estaremos nuevamente disponibles muy pronto.
+    </p>
+
+    <div class="status">
+      <i></i>
+      ACTUALIZACIÓN EN CURSO
+    </div>
+
+    <div class="contact">
+
+      <span class="contact-label">
+        ¿NECESITAS AYUDA O TIENES ALGUNA DUDA?
+      </span>
+
+      <a
+        class="whatsapp"
+        href="https://wa.me/528181877770?text=Hola%2C%20tengo%20una%20duda."
+        target="_blank"
+        rel="noopener"
+      >
+
+        <span class="wa-icon">W</span>
+
+        <span class="wa-copy">
+          <small>CONTACTAR POR WHATSAPP</small>
+          <strong>81 8187 7770</strong>
+        </span>
+
+        <span class="arrow">→</span>
+
+      </a>
+
+    </div>
+
+    <footer>
+      ✦ &nbsp;
+      <strong>EVEX</strong>
+      &nbsp;·&nbsp; EVENT EXPERIENCE PLATFORM
+    </footer>
+
+  </main>
+
+</div>
+
+</body>
+</html>
